@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Extra small dimen. -->
+    <dimen name="dp_xsmall">2dp</dimen>
+    <dimen name="sp_xsmall">2sp</dimen>   
+    
+    <!-- Small dimen. -->
+    <dimen name="dp_small">4dp</dimen>
+    <dimen name="sp_small">4sp</dimen>    
+    
+    <!-- Medium dimen. -->
+    <dimen name="dp_medium">8dp</dimen>
+    <dimen name="sp_medium">8sp</dimen>    
+    
+     <!-- Large dimen.  -->
+    <dimen name="dp_large">16dp</dimen>
+    <dimen name="sp_large">16sp</dimen>    
+    
+    <!-- Extra large dimen. -->
+    <dimen name="dp_xlarge">24dp</dimen>
+    <dimen name="sp_xlarge">24sp</dimen>    
+    
+    <!-- Double extra large dimen.  -->
+    <dimen name="dp_xxlarge">32dp</dimen>
+    <dimen name="sp_xxlarge">32sp</dimen>    
+    
+    <!-- Triple extra large dimen. -->
+    <dimen name="dp_xxxlarge">48dp</dimen>
+    <dimen name="sp_xxxlarge">48sp</dimen>    
+    
+    <!-- Quadruple extra large dimen. -->
+    <dimen name="dp_xxxxlarge">64dp</dimen>
+    <dimen name="sp_xxxxlarge">64sp</dimen>
+</resources>
