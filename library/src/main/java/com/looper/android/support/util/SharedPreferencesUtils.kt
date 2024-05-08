@@ -5,16 +5,16 @@ import android.content.SharedPreferences
 
 import androidx.preference.PreferenceManager
 
-class SharedPreferenceUtils private constructor(context: Context) {
+class SharedPreferencesUtils private constructor(context: Context) {
 
     private val sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     companion object {
-        private var instance: SharedPreferenceUtils? = null
+        private var instance: SharedPreferencesUtils? = null
 
-        fun getInstance(context: Context): SharedPreferenceUtils {
+        fun getInstance(context: Context): SharedPreferencesUtils {
             if (instance == null) {
-                instance = SharedPreferenceUtils(context.applicationContext)
+                instance = SharedPreferencesUtils(context.applicationContext)
             }
             return instance!!
         }
