@@ -10,11 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looper.android.support.R
-import com.looper.android.support.util.UIUtils
 
 open class ColorPickerPreference(context: Context, attrs: AttributeSet) : Preference(context, attrs),
     SeekBar.OnSeekBarChangeListener {
@@ -84,11 +84,11 @@ open class ColorPickerPreference(context: Context, attrs: AttributeSet) : Prefer
                         @Suppress("SameParameterValue")
                         setColorWithText(color, true)
                     } catch (e: IllegalArgumentException) {
-                        UIUtils.showToast(
+                        Toast.makeText(
                             context,
                             context.getString(R.string.invalid_color),
-                            UIUtils.TOAST_LENGTH_SHORT
-                        )
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }

@@ -6,6 +6,7 @@ import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
+import android.widget.Toast
 import java.util.*
 import com.looper.android.support.R
 
@@ -18,7 +19,7 @@ class SpeechUtils(private val context: Context) {
     init {
         textToSpeech = TextToSpeech(context) { status ->
             if (status != TextToSpeech.SUCCESS) {
-                UIUtils.showToast(context, context.getString(R.string.tts_init_failed), UIUtils.TOAST_LENGTH_SHORT)
+                Toast.makeText(context, context.getString(R.string.tts_init_failed), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -40,7 +41,7 @@ class SpeechUtils(private val context: Context) {
             speechRecognizer?.startListening(speechIntent)
         } else {
             // Speech recognition not available.
-            UIUtils.showToast(context, context.getString(R.string.stt_not_available), UIUtils.TOAST_LENGTH_SHORT)
+            Toast.makeText(context, context.getString(R.string.stt_not_available), Toast.LENGTH_SHORT).show()
         }
     }
 

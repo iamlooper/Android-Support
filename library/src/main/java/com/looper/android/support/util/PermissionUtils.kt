@@ -2,6 +2,7 @@ package com.looper.android.support.util
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -42,11 +43,11 @@ object PermissionUtils {
             // Check if the permission was granted.
             if (!isGranted(context, permission)) {
                 // If the permission was not granted, show a toast message to inform the user.
-                UIUtils.showToast(
+                Toast.makeText(
                     context,
                     context.getString(R.string.permission_not_granted_message),
-                    UIUtils.TOAST_LENGTH_LONG
-                )
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

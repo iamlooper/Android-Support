@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.looper.android.support.R
 import java.io.File
@@ -75,7 +76,7 @@ object IntentUtils {
             context.startActivity(chooserIntent)
         } else {
             // Handle the case where no appropriate app is installed to handle the share action.
-            UIUtils.showToast(context, context.getString(R.string.no_app_found_to_share_file), UIUtils.TOAST_LENGTH_SHORT)
+            Toast.makeText(context, context.getString(R.string.no_app_found_to_share_file), Toast.LENGTH_SHORT).show()
         }
     }    
 }
