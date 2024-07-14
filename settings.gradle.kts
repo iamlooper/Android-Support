@@ -1,3 +1,3 @@
 rootProject.name = "Android Support"
 
-include(":library")
+include(":app", ":library")

@@ -9,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 27
+        minSdk = 24
         multiDexEnabled = true
     }
     
@@ -42,13 +42,8 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.preference)
     implementation(libs.androidx.navigation.fragment)
-    implementation(libs.androidx.navigation.ui)    
-    
+    implementation(libs.androidx.navigation.ui)
     implementation(libs.material)
-        
-    implementation(libs.topjohnwu.libsu.core)
-
-    implementation(libs.squareup.okhttp)
 }
 
 afterEvaluate {
@@ -58,7 +53,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.iamlooper"
                 artifactId = "android-support"
-                version = "2.5.0"
+                version = "2.6.0"
             }
         }
     }

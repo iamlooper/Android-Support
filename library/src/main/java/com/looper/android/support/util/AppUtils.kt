@@ -60,15 +60,36 @@ object AppUtils {
      * @param context, the context of the application.
      * @return The version name of the application.
      */
-    fun getVersion(context: Context): String {
-        var version = ""
-        try {
-            val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            version = packageInfo.versionName
+    fun getVersionName(context: Context): String {
+        return try {
+            val packageInfo: PackageInfo =
+                context.packageManager.getPackageInfo(context.packageName, 0)
+            packageInfo.versionName
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
+            ""
         }
-        return version
+    }
+
+    /**
+     * Retrieves the version code of the application.
+     *
+     * @param context, the context of the application.
+     * @return The version code of the application.
+     */
+    fun getVersionCode(context: Context): Long {
+        return try {
+            val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                packageInfo.longVersionCode
+            } else {
+                @Suppress("DEPRECATION")
+                packageInfo.versionCode.toLong()
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            0
+        }
     }
 
     /**
@@ -90,21 +111,14 @@ object AppUtils {
     /**
      * Gets the full path of a native library file.
      *
-     * @param context, the application context.
-     * @param libraryName, the name of the native library (without any prefix or extension).
+     * @param context The application context.
+     * @param libraryName The name of the native library (without any prefix or extension).
      * @return The absolute path of the native library file.
      */
     fun getNativeLibraryPath(context: Context, libraryName: String): String {
-        // Get the directory where native libraries are stored for the current application.
         val libraryFolderPath = context.applicationInfo.nativeLibraryDir
-
-        // Map the library name to the appropriate platform-specific file name.
         val libraryFileName = System.mapLibraryName(libraryName)
-
-        // Create a File object representing the library file inside the library folder path.
         val libraryFile = File(libraryFolderPath, libraryFileName)
-
-        // Return the absolute path of the library file.
         return libraryFile.absolutePath
     }
 }
