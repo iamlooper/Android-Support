@@ -20,56 +20,57 @@ object PermissionUtils {
      * @return `true` if the permission is granted, `false` otherwise.
      */
     fun isPermissionGranted(context: Context, permission: String): Boolean {
-        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            context,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     /**
-     * Registers a permission launcher.
+     * Registers a permission launcher and returns a request function that can be used to request permission later.
      *
      * @param activity the activity to register the launcher.
      * @param context the context of the application.
+     * @param permission the permission to request.
      * @param onPermissionGranted optional callback when the permission is granted.
      * @param onPermissionDenied optional callback when the permission is denied.
      *
-     * @return the registered ActivityResultLauncher.
-     */
-    fun registerPermissionLauncher(
-        activity: AppCompatActivity,
-        context: Context,
-        onPermissionGranted: (() -> Unit)? = null,
-        onPermissionDenied: (() -> Unit)? = null
-    ): ActivityResultLauncher<String> {
-        return activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                onPermissionGranted?.invoke()
-            } else {
-                onPermissionDenied?.invoke() ?: run {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.permission_not_granted_message),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }
-
-    /**
-     * Requests the specified permission from the user.
-     *
-     * @param launcher the ActivityResultLauncher to launch the permission request.
-     * @param context the context of the application.
-     * @param permission the permission to request.
+     * @return a function that can be called to request the permission.
      */
     fun requestPermission(
-        launcher: ActivityResultLauncher<String>,
+        activity: AppCompatActivity,
         context: Context,
-        permission: String
-    ) {
-        if (isPermissionGranted(context, permission)) {
-            return
+        permission: String,
+        onPermissionGranted: (() -> Unit)? = null,
+        onPermissionDenied: (() -> Unit)? = null
+    ): () -> Unit {
+        var launcher: ActivityResultLauncher<String>? = null
+
+        try {
+            launcher =
+                activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
+                    if (isPermissionGranted(context, permission)) {
+                        onPermissionGranted?.invoke()
+                    } else {
+                        onPermissionDenied?.invoke() ?: run {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.permission_not_granted_message),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
-        launcher.launch(permission)
+        return {
+            if (isPermissionGranted(context, permission)) {
+                onPermissionGranted?.invoke()
+            } else {
+                launcher?.launch(permission)
+            }
+        }
     }
 }
