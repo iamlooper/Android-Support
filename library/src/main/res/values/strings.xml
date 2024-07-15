@@ -2,22 +2,15 @@
 <resources>
     <string name="app_name">App Name</string>
     <string name="app_description">App Description</string>
-    
     <string name="drawer_nav_header_title">Drawer Navigation Title</string>
     <string name="drawer_nav_header_desc">Drawer Navigation Description</string>
-
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
-
     <string name="share_file">Share File</string>
     <string name="no_app_found_to_share_file">No app found to share the file</string>
-
     <string name="invalid_color">Invalid color!</string>
-
     <string name="tts_init_failed">Text-to-speech initialization failed</string>
     <string name="stt_not_available">Speech-to-text not available</string>
-
     <string name="app_crashed_message">App crashed. Log copied to clipboard.</string>
-
     <string name="permission_not_granted_message">Permission not granted, functionality of the app may be affected</string>
 </resources>

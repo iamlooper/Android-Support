@@ -3,6 +3,7 @@ package com.looper.android.support.util
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,32 +24,23 @@ object PermissionUtils {
     }
 
     /**
-     * Requests the specified permission from the user with optional callbacks.
+     * Registers a permission launcher.
      *
-     * @param activity the activity to show the permission request dialog.
+     * @param activity the activity to register the launcher.
      * @param context the context of the application.
-     * @param permission the permission to request.
      * @param onPermissionGranted optional callback when the permission is granted.
      * @param onPermissionDenied optional callback when the permission is denied.
+     *
+     * @return the registered ActivityResultLauncher.
      */
-    fun requestPermission(
+    fun registerPermissionLauncher(
         activity: AppCompatActivity,
         context: Context,
-        permission: String,
         onPermissionGranted: (() -> Unit)? = null,
         onPermissionDenied: (() -> Unit)? = null
-    ) {
-        // Check if the permission is already granted.
-        if (isPermissionGranted(context, permission)) {
-            onPermissionGranted?.invoke()
-            return
-        }
-
-        // Create a launcher for requesting the permission.
-        val requestPermissionLauncher = activity.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { _ ->
-            if (isPermissionGranted(context, permission)) {
+    ): ActivityResultLauncher<String> {
+        return activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
                 onPermissionGranted?.invoke()
             } else {
                 onPermissionDenied?.invoke() ?: run {
@@ -60,8 +52,24 @@ object PermissionUtils {
                 }
             }
         }
+    }
 
-        // Request the permission.
-        requestPermissionLauncher.launch(permission)
+    /**
+     * Requests the specified permission from the user.
+     *
+     * @param launcher the ActivityResultLauncher to launch the permission request.
+     * @param context the context of the application.
+     * @param permission the permission to request.
+     */
+    fun requestPermission(
+        launcher: ActivityResultLauncher<String>,
+        context: Context,
+        permission: String
+    ) {
+        if (isPermissionGranted(context, permission)) {
+            return
+        }
+
+        launcher.launch(permission)
     }
 }
