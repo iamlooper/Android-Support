@@ -53,7 +53,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.iamlooper"
                 artifactId = "android-support"
-                version = "2.7.1"
+                version = "2.7.5"
             }
         }
     }

@@ -60,7 +60,7 @@ object FileUtils {
     fun delete(file: File): Boolean {
         return file.exists() && file.delete()
     }
-   
+
     /**
      * Checks if the given file exists or is empty.
      *

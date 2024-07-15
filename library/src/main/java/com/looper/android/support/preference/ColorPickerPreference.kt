@@ -16,7 +16,8 @@ import androidx.preference.PreferenceViewHolder
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.looper.android.support.R
 
-open class ColorPickerPreference(context: Context, attrs: AttributeSet) : Preference(context, attrs),
+open class ColorPickerPreference(context: Context, attrs: AttributeSet) :
+    Preference(context, attrs),
     SeekBar.OnSeekBarChangeListener {
     private var currentColor: Int? = null
     private var redSeekBar: SeekBar? = null

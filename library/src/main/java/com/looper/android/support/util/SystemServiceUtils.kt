@@ -37,7 +37,8 @@ object SystemServiceUtils {
         editText.requestFocus()
 
         // Get the InputMethodManager service.
-        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         // Show the keyboard.
         inputMethodManager.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
@@ -50,7 +51,8 @@ object SystemServiceUtils {
      */
     fun hideKeyboard(activity: Activity) {
         // Get the input method manager.
-        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val inputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         // Find the currently focused view, so we can grab the correct window token from it.
         var view = activity.currentFocus

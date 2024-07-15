@@ -13,8 +13,8 @@ import androidx.core.view.WindowInsetsCompat
 open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)    
-    
+        super.onCreate(savedInstanceState)
+
         // Configure edge-to-edge display.
         configureEdgeToEdgeDisplay()
     }
@@ -37,7 +37,8 @@ open class BaseActivity : AppCompatActivity() {
                 val insets: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
                 // Adjust padding and margins for the root view.
-                val params: ViewGroup.MarginLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+                val params: ViewGroup.MarginLayoutParams =
+                    view.layoutParams as ViewGroup.MarginLayoutParams
                 view.setPadding(
                     params.leftMargin + insets.left,
                     0,
@@ -52,7 +53,7 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
     }
-    
+
     protected open fun getContentView(): Int? {
         return null
     }

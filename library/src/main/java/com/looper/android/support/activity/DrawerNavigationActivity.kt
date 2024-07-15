@@ -35,7 +35,8 @@ open class DrawerNavigationActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         // Find the navigation controller.
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view_content_main) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container_view_content_main) as NavHostFragment
         navController = navHostFragment.navController
 
         // Get the view of drawer.

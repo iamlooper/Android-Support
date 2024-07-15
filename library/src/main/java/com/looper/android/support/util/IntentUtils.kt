@@ -45,7 +45,7 @@ object IntentUtils {
             e.printStackTrace()
         }
     }
-    
+
     /**
      * Shares a file using an Intent.
      *
@@ -68,7 +68,8 @@ object IntentUtils {
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant read permission on the URI.
 
         // Create a chooser Intent to display app options for sharing.
-        val chooserIntent = Intent.createChooser(shareIntent, context.getString(R.string.share_file))
+        val chooserIntent =
+            Intent.createChooser(shareIntent, context.getString(R.string.share_file))
 
         // Check if there is an app available to handle the share action.
         if (shareIntent.resolveActivity(context.packageManager) != null) {
@@ -76,7 +77,11 @@ object IntentUtils {
             context.startActivity(chooserIntent)
         } else {
             // Handle the case where no appropriate app is installed to handle the share action.
-            Toast.makeText(context, context.getString(R.string.no_app_found_to_share_file), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.no_app_found_to_share_file),
+                Toast.LENGTH_SHORT
+            ).show()
         }
-    }    
+    }
 }

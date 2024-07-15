@@ -7,8 +7,8 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.speech.tts.TextToSpeech
 import android.widget.Toast
-import java.util.*
 import com.looper.android.support.R
+import java.util.Locale
 
 class SpeechUtils(private val context: Context) {
 
@@ -19,7 +19,11 @@ class SpeechUtils(private val context: Context) {
     init {
         textToSpeech = TextToSpeech(context) { status ->
             if (status != TextToSpeech.SUCCESS) {
-                Toast.makeText(context, context.getString(R.string.tts_init_failed), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.tts_init_failed),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -35,20 +39,30 @@ class SpeechUtils(private val context: Context) {
             speechRecognizer?.setRecognitionListener(listener)
 
             val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
-            speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            speechIntent.putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
             speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
 
             speechRecognizer?.startListening(speechIntent)
         } else {
             // Speech recognition not available.
-            Toast.makeText(context, context.getString(R.string.stt_not_available), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                context.getString(R.string.stt_not_available),
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
     // Starts speech recognition.
     fun startListening() {
         val speechIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
             putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
         }
         speechRecognizer?.startListening(speechIntent)

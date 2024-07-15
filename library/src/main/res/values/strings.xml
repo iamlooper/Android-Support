@@ -11,6 +11,7 @@
     <string name="invalid_color">Invalid color!</string>
     <string name="tts_init_failed">Text-to-speech initialization failed</string>
     <string name="stt_not_available">Speech-to-text not available</string>
-    <string name="app_crashed_message">App crashed. Log copied to clipboard.</string>
+    <string name="app_crashed_message">App crashed. Log copied to clipboard</string>
     <string name="permission_not_granted_message">Permission not granted, functionality of the app may be affected</string>
+    <string name="action_confirm_text">Are you certain? This action is irreversible.</string>
 </resources>

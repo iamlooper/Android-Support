@@ -24,10 +24,16 @@ object AppUtils {
         try {
             // Get the package info.
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+                context.packageManager.getPackageInfo(
+                    context.packageName,
+                    PackageManager.GET_SIGNING_CERTIFICATES
+                )
             } else {
                 @Suppress("DEPRECATION")
-                context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
+                context.packageManager.getPackageInfo(
+                    context.packageName,
+                    PackageManager.GET_SIGNATURES
+                )
             }
 
             // Get the app's signatures.
@@ -79,7 +85,8 @@ object AppUtils {
      */
     fun getVersionCode(context: Context): Long {
         return try {
-            val packageInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            val packageInfo: PackageInfo =
+                context.packageManager.getPackageInfo(context.packageName, 0)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 packageInfo.longVersionCode
             } else {

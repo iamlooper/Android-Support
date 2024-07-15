@@ -17,17 +17,26 @@ object NotificationUtils {
      * @param notificationChannelId, the unique ID for the notification channel.
      * @param notificationChannelName, the user-visible name of the notification channel.
      */
-    fun buildChannel(context: Context, notificationChannelId: String, notificationChannelName: String) {
+    fun buildChannel(
+        context: Context,
+        notificationChannelId: String,
+        notificationChannelName: String
+    ) {
         // Check if the Android version is Oreo or higher, as NotificationChannel is not available in lower versions.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager =
+                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
             // Check if the notification channel already exists.
             val existingChannel = notificationManager.getNotificationChannel(notificationChannelId)
 
             if (existingChannel == null) {
                 // Create a new notification channel.
-                val notificationChannel = NotificationChannel(notificationChannelId, notificationChannelName, NotificationManager.IMPORTANCE_DEFAULT)
+                val notificationChannel = NotificationChannel(
+                    notificationChannelId,
+                    notificationChannelName,
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
 
                 // Create the notification channel.
                 notificationManager.createNotificationChannel(notificationChannel)
@@ -54,7 +63,11 @@ object NotificationUtils {
      * @param smallIconResourceId, the resource ID of the small icon.
      * @return the notification builder.
      */
-    fun createNotificationBuilder(context: Context, channelId: String, smallIconResourceId: Int): NotificationCompat.Builder {
+    fun createNotificationBuilder(
+        context: Context,
+        channelId: String,
+        smallIconResourceId: Int
+    ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, channelId)
             .setSmallIcon(smallIconResourceId)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -68,7 +81,11 @@ object NotificationUtils {
      * @param notificationBuilder, the notification builder.
      */
     @SuppressLint("MissingPermission")
-    fun displayNotification(context: Context, notificationId: Int, notificationBuilder: NotificationCompat.Builder) {
+    fun displayNotification(
+        context: Context,
+        notificationId: Int,
+        notificationBuilder: NotificationCompat.Builder
+    ) {
         val notificationManager = NotificationManagerCompat.from(context)
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
