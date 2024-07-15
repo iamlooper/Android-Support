@@ -9,6 +9,13 @@ class SharedPreferencesUtils(context: Context) {
     private val sharedPreferences: SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
 
+    /**
+     * Stores a key-value pair in SharedPreferences.
+     *
+     * @param key The key under which the value should be stored.
+     * @param value The value to be stored.
+     * @throws IllegalArgumentException if the value type is unsupported.
+     */
     @Suppress("UNCHECKED_CAST")
     fun put(key: String, value: Any) {
         val editor = sharedPreferences.edit()
@@ -24,6 +31,14 @@ class SharedPreferencesUtils(context: Context) {
         editor.apply()
     }
 
+    /**
+     * Retrieves a value from SharedPreferences.
+     *
+     * @param key The key whose value should be retrieved.
+     * @param defaultValue The default value to return if the key does not exist.
+     * @return The value associated with the key, or the default value if the key does not exist.
+     * @throws IllegalArgumentException if the default value type is unsupported.
+     */
     @Suppress("IMPLICIT_CAST_TO_ANY", "UNCHECKED_CAST")
     fun <T> get(key: String, defaultValue: T): T {
         return when (defaultValue) {
@@ -37,18 +52,25 @@ class SharedPreferencesUtils(context: Context) {
         } as T
     }
 
+    /**
+     * Removes a key-value pair from SharedPreferences.
+     *
+     * @param key The key to be removed.
+     */
     fun remove(key: String) {
         val editor = sharedPreferences.edit()
         editor.remove(key)
         editor.apply()
     }
 
+    // Clears all key-value pairs in SharedPreferences.
     fun clear() {
         val editor = sharedPreferences.edit()
         editor.clear()
         editor.apply()
     }
 
+    // Returns the SharedPreferences instance.
     fun getSharedPreferences(): SharedPreferences {
         return sharedPreferences
     }

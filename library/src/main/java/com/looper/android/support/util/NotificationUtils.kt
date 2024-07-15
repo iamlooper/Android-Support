@@ -17,7 +17,6 @@ object NotificationUtils {
      * @param notificationChannelId, the unique ID for the notification channel.
      * @param notificationChannelName, the user-visible name of the notification channel.
      */
-    @SuppressLint("ObsoleteSdkInt")
     fun buildChannel(context: Context, notificationChannelId: String, notificationChannelName: String) {
         // Check if the Android version is Oreo or higher, as NotificationChannel is not available in lower versions.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

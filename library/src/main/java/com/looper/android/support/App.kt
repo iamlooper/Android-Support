@@ -25,6 +25,7 @@ open class App : Application() {
         @SuppressLint("StaticFieldLeak")
         var currentActivity: Activity? = null
 
+        @JvmStatic
         fun applicationContext(): Context {
             return instance!!.applicationContext
         }

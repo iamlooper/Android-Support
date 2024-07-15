@@ -13,45 +13,55 @@ object PermissionUtils {
     /**
      * Checks if the specified permission is granted.
      *
-     * @param context, the context of the application.
-     * @param permission, the permission to check.
+     * @param context the context of the application.
+     * @param permission the permission to check.
      *
      * @return `true` if the permission is granted, `false` otherwise.
-    */
-    fun isGranted(context: Context, permission: String): Boolean {
-        // Check if the permission is granted.
+     */
+    fun isPermissionGranted(context: Context, permission: String): Boolean {
         return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
     }
 
     /**
-     * Requests the specified permission from the user.
+     * Requests the specified permission from the user with optional callbacks.
      *
-     * @param activity, the activity to show the permission request dialog.
-     * @param context, the context of the application.
-     * @param permission, the permission to request.
-    */
-    fun request(activity: AppCompatActivity, context: Context, permission: String) {
+     * @param activity the activity to show the permission request dialog.
+     * @param context the context of the application.
+     * @param permission the permission to request.
+     * @param onPermissionGranted optional callback when the permission is granted.
+     * @param onPermissionDenied optional callback when the permission is denied.
+     */
+    fun requestPermission(
+        activity: AppCompatActivity,
+        context: Context,
+        permission: String,
+        onPermissionGranted: (() -> Unit)? = null,
+        onPermissionDenied: (() -> Unit)? = null
+    ) {
         // Check if the permission is already granted.
-        if (isGranted(context, permission)) {
+        if (isPermissionGranted(context, permission)) {
+            onPermissionGranted?.invoke()
             return
         }
 
-        // Create a launcher for requesting permissions.
+        // Create a launcher for requesting the permission.
         val requestPermissionLauncher = activity.registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { _ ->
-            // Check if the permission was granted.
-            if (!isGranted(context, permission)) {
-                // If the permission was not granted, show a toast message to inform the user.
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.permission_not_granted_message),
-                    Toast.LENGTH_SHORT
-                ).show()
+            if (isPermissionGranted(context, permission)) {
+                onPermissionGranted?.invoke()
+            } else {
+                onPermissionDenied?.invoke() ?: run {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.permission_not_granted_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
 
-        // Ask for the permission.
+        // Request the permission.
         requestPermissionLauncher.launch(permission)
     }
 }
