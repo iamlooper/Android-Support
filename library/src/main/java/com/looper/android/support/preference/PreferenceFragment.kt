@@ -82,7 +82,7 @@ abstract class PreferenceFragment : PreferenceFragmentCompat() {
             is EditTextPreference -> {
                 // Inflate the layout for EditTextPreference dialog.
                 val dialogView = LayoutInflater.from(requireContext())
-                    .inflate(R.layout.preference_dialog_edit_text, null)
+                    .inflate(R.layout.dialog_edit_text, null)
                 val input: TextInputEditText = dialogView.findViewById(R.id.input)
 
                 // Set the initial text value to EditTextPreference value.

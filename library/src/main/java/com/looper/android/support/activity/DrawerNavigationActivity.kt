@@ -1,8 +1,11 @@
 package com.looper.android.support.activity
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.navigation.NavController
@@ -42,20 +45,21 @@ open class DrawerNavigationActivity : BaseActivity() {
         // Get the view of drawer.
         navView = findViewById(R.id.nav_view)
 
-        // Set the header padding.
-        val topExtraPadding = resources.displayMetrics.density * 8
-        val topPadding = getStatusBarHeight() + topExtraPadding
-        navView.getHeaderView(0).setPadding(0, topPadding.toInt(), 0, 0)
-    }
+        // Resolve visual overlap of drawer.
+        ViewCompat.setOnApplyWindowInsetsListener(navView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-    @SuppressLint("DiscouragedApi", "InternalInsetResource")
-    private fun getStatusBarHeight(): Int {
-        var result = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
+            // Apply the insets as a margin to the view.
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                leftMargin = insets.left
+                topMargin = insets.top
+                bottomMargin = insets.bottom
+                rightMargin = insets.right
+            }
+
+            // Don't pass down window insets to descendant views.
+            WindowInsetsCompat.CONSUMED
         }
-        return result
     }
 
     protected open fun setupNavigation(navGraphId: Int, menuId: Int) {

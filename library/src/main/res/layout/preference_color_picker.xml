@@ -24,12 +24,13 @@
         android:layout_marginEnd="-4dp"
         tools:ignore="RtlSymmetry">
 
-        <com.android.internal.widget.PreferenceImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@android:id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="48dp"
-            android:maxHeight="48dp" />
+            android:maxHeight="48dp"
+            app:strokeWidth="0dp" />
     </LinearLayout>
 
     <RelativeLayout
@@ -39,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1.0">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:textAppearance="?android:attr/textAppearanceListItem"
             android:ellipsize="marquee"
             android:id="@android:id/title"
@@ -47,7 +48,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:textAppearance="?android:attr/textAppearanceListItemSecondary"
             android:textColor="?android:attr/textColorSecondary"
             android:ellipsize="end"

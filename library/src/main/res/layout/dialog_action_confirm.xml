@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/dp_large">
+    android:padding="16dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/dp_medium"
+        android:padding="8dp"
         android:text="@string/action_confirm_text" />
 
 </LinearLayout>

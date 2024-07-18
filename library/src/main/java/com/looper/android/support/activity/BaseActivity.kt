@@ -3,12 +3,11 @@ package com.looper.android.support.activity
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.ViewGroup
-import android.view.Window
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -21,34 +20,22 @@ open class BaseActivity : AppCompatActivity() {
 
     // Configures the edge-to-edge display for the activity.
     private fun configureEdgeToEdgeDisplay() {
-        // Get the window object associated with this activity.
-        val window: Window = window
+        // Enable edge-to-edge display.
+        enableEdgeToEdge()
 
-        // Enable edge-to-edge display by setting decor fits system windows to false.
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        // Apply content overlap fix for landscape orientation with mobile_navigation.xml buttons.
+        // Resolve visual overlap in button mode.
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            val rootView: ViewGroup = window.decorView.findViewById(android.R.id.content)
+            ViewCompat.setOnApplyWindowInsetsListener(window.decorView.findViewById(android.R.id.content)) { view, windowInsets ->
+                val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
-            // Apply window insets listener to adjust padding and margins.
-            ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, windowInsets ->
-                // Get the insets for system bars.
-                val insets: Insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+                // Apply the insets as a margin to the view.
+                view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    leftMargin = insets.left
+                    bottomMargin = insets.bottom
+                    rightMargin = insets.right
+                }
 
-                // Adjust padding and margins for the root view.
-                val params: ViewGroup.MarginLayoutParams =
-                    view.layoutParams as ViewGroup.MarginLayoutParams
-                view.setPadding(
-                    params.leftMargin + insets.left,
-                    0,
-                    params.rightMargin + insets.right,
-                    params.bottomMargin + insets.bottom
-                )
-                params.topMargin = 0
-                view.layoutParams = params
-
-                // Return the adjusted window insets.
+                // Propagate window insets to child views.
                 windowInsets
             }
         }

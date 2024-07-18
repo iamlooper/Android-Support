@@ -6,14 +6,12 @@ import android.app.Application
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.Process
 import android.util.Log
 import android.widget.Toast
 import com.looper.android.support.util.AppUtils
 import com.looper.android.support.util.SystemServiceUtils
 import java.text.SimpleDateFormat
 import java.util.Date
-import kotlin.system.exitProcess
 
 open class App : Application() {
 
@@ -24,12 +22,10 @@ open class App : Application() {
         private var instance: App? = null
 
         @SuppressLint("StaticFieldLeak")
-        var currentActivity: Activity? = null
+        private var currentActivity: Activity? = null
 
         @JvmStatic
-        fun applicationContext(): Context {
-            return instance!!.applicationContext
-        }
+        fun getAppContext(): Context? = instance?.applicationContext
     }
 
     override fun onCreate() {
@@ -109,9 +105,5 @@ open class App : Application() {
 
         // Allow default exception handler now.
         defaultUncaughtExceptionHandler?.uncaughtException(thread, throwable)
-
-        // Exit the app.
-        Process.killProcess(Process.myPid())
-        exitProcess(1)
     }
 }

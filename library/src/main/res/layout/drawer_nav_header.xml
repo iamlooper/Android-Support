@@ -1,39 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/dp_large"
-    android:paddingTop="@dimen/dp_large"
-    android:paddingRight="@dimen/dp_large"
-    android:paddingBottom="@dimen/dp_large"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="16dp"
     android:fitsSystemWindows="true"
     android:theme="@style/ThemeOverlay.AppCompat.DayNight">
 
-    <ImageView
-        android:contentDescription="@string/app_name"
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_xxxlarge"
-        android:layout_marginLeft="@dimen/dp_xxlarge"
-        android:layout_marginTop="@dimen/dp_xlarge"
-        android:layout_marginBottom="@dimen/dp_xlarge"
-        android:scaleType="fitCenter"
+        android:layout_height="48dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:adjustViewBounds="true"
-        android:paddingTop="@dimen/dp_medium"
+        android:contentDescription="@string/app_name"
+        android:paddingTop="8dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@mipmap/ic_launcher_foreground"
         app:tint="?colorPrimary"
-        app:srcCompat="@mipmap/ic_launcher_foreground" />
+        app:strokeWidth="0dp"
+        tools:ignore="ImageContrastCheck" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dp_medium"
+        android:paddingTop="8dp"
         android:text="@string/drawer_nav_header_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/drawer_nav_header_desc" />
