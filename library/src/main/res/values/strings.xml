@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">App Name</string>
-    <string name="app_description">App Description</string>
-    <string name="drawer_nav_header_title">Drawer Navigation Title</string>
-    <string name="drawer_nav_header_desc">Drawer Navigation Description</string>
     <string name="okay">Okay</string>
     <string name="cancel">Cancel</string>
     <string name="share_file">Share File</string>

@@ -40,8 +40,4 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
     }
-
-    protected open fun getContentView(): Int? {
-        return null
-    }
 }
