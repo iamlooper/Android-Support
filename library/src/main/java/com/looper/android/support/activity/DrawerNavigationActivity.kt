@@ -59,20 +59,6 @@ open class DrawerNavigationActivity : BaseActivity() {
             // Don't pass down window insets to descendant views.
             WindowInsetsCompat.CONSUMED
         }
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { view, windowInsets ->
-            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-            // Apply the insets as a margin to the view.
-            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) leftMargin =
-                    insets.left
-                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) rightMargin =
-                    insets.right
-            }
-
-            // Don't pass down window insets to descendant views.
-            WindowInsetsCompat.CONSUMED
-        }
 
         // Consumes extra top padding caused by system windows.
         val navHostFragmentParent: ConstraintLayout = findViewById(R.id.nav_host_fragment_parent)
@@ -81,6 +67,8 @@ open class DrawerNavigationActivity : BaseActivity() {
                 topMargin = -navHostFragmentParent.paddingTop
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) leftMargin =
                     -navHostFragmentParent.paddingLeft
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) rightMargin =
+                    -navHostFragmentParent.paddingRight
             }
         }
     }
