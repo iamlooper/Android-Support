@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <style name="Theme.Base" parent="Theme.Material3.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
+    <style name="Theme.Base" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.Material3</item>        
     </style>
-
 </resources>

@@ -9,7 +9,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 21
         multiDexEnabled = true
     }
     
@@ -24,10 +24,7 @@ android {
                
     buildTypes {
         getByName("release") {
-            // Disables code shrinking, obfuscation, and optimization.
             isMinifyEnabled = false
-            
-            // Includes the default ProGuard rules files.
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -53,7 +50,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.iamlooper"
                 artifactId = "android-support"
-                version = "2.9.0"
+                version = "2.10.0"
             }
         }
     }
