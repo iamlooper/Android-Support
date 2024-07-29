@@ -64,6 +64,8 @@ open class DrawerNavigationActivity : BaseActivity() {
 
             // Apply the insets as a margin to the view.
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) leftMargin =
+                    insets.left
                 if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) rightMargin =
                     insets.right
             }
@@ -85,6 +87,13 @@ open class DrawerNavigationActivity : BaseActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onDestroy() {
+        // Clear the entire back stack.
+        navController.popBackStack(navController.graph.startDestinationId, true)
+
+        super.onDestroy()
     }
 
     protected fun setupNavigation(navGraphId: Int, menuId: Int) {
