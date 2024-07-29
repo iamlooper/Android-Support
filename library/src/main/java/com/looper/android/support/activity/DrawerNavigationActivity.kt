@@ -46,16 +46,26 @@ open class DrawerNavigationActivity : BaseActivity() {
         // Get the view of drawer.
         navView = findViewById(R.id.nav_view)
 
-        // Resolve visual overlap of drawer.
+        // Resolve visual overlaps.
         ViewCompat.setOnApplyWindowInsetsListener(navView) { view, windowInsets ->
             val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
 
             // Apply the insets as a margin to the view.
             view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-                leftMargin = insets.left
                 topMargin = insets.top
                 bottomMargin = insets.bottom
-                rightMargin = insets.right
+            }
+
+            // Don't pass down window insets to descendant views.
+            WindowInsetsCompat.CONSUMED
+        }
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+
+            // Apply the insets as a margin to the view.
+            view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) rightMargin =
+                    insets.right
             }
 
             // Don't pass down window insets to descendant views.
@@ -67,14 +77,8 @@ open class DrawerNavigationActivity : BaseActivity() {
         navHostFragmentParent.viewTreeObserver.addOnGlobalLayoutListener {
             navHostFragmentParent.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                 topMargin = -navHostFragmentParent.paddingTop
-            }
-            if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                navHostFragmentParent.setPadding(
-                    0,
-                    navHostFragmentParent.paddingTop,
-                    navHostFragmentParent.paddingRight,
-                    navHostFragmentParent.paddingBottom
-                )
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) leftMargin =
+                    -navHostFragmentParent.paddingLeft
             }
         }
     }
