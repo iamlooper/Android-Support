@@ -16,6 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.looper.android.support.R
@@ -127,5 +128,13 @@ open class DrawerNavigationActivity : BaseActivity() {
 
     fun setDrawerFragmentTitle(fragmentId: Int, title: String) {
         navView.menu.findItem(fragmentId).title = title
+    }
+
+    fun setAppBarLiftOnScroll(targetViewId: Int?) {
+        val appbar = findViewById<AppBarLayout>(R.id.app_bar_layout)
+        targetViewId?.let {
+            appbar?.isLiftOnScroll = true
+            appbar?.liftOnScrollTargetViewId = it
+        }
     }
 }
