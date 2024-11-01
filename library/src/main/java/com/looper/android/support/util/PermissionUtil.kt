@@ -3,13 +3,13 @@ package com.looper.android.support.util
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.looper.android.support.R
 
-object PermissionUtils {
+object PermissionUtil {
 
     /**
      * Checks if the specified permission is granted.
@@ -38,7 +38,7 @@ object PermissionUtils {
      * @return a function that can be called to request the permission.
      */
     fun requestPermission(
-        activity: AppCompatActivity,
+        activity: ComponentActivity? = null,
         context: Context,
         permission: String,
         onPermissionGranted: (() -> Unit)? = null,
@@ -47,8 +47,9 @@ object PermissionUtils {
         var launcher: ActivityResultLauncher<String>? = null
 
         try {
-            launcher =
-                activity.registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
+            activity?.let {
+                launcher =
+                    it.registerForActivityResult(ActivityResultContracts.RequestPermission()) { _ ->
                     if (isPermissionGranted(context, permission)) {
                         onPermissionGranted?.invoke()
                     } else {
@@ -61,6 +62,7 @@ object PermissionUtils {
                         }
                     }
                 }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

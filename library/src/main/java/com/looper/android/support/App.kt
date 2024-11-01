@@ -3,15 +3,16 @@ package com.looper.android.support
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.looper.android.support.util.AppUtils
-import com.looper.android.support.util.SystemServiceUtils
+import com.looper.android.support.provider.AppContextProvider
+import com.looper.android.support.util.AppUtil
+import com.looper.android.support.util.SystemServiceUtil
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Stack
 
 open class App : Application() {
 
@@ -19,48 +20,79 @@ open class App : Application() {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
-        private var instance: App? = null
-
-        @SuppressLint("StaticFieldLeak")
         private var currentActivity: Activity? = null
 
-        @JvmStatic
-        fun getAppContext(): Context? = instance?.applicationContext
+        // Stack to maintain activity history
+        private val activityStack = Stack<Activity>()
+
+        // Getter for current activity
+        fun getCurrentActivity(): Activity? = currentActivity
+
+        // Getter for top activity from stack
+        fun getTopActivity(): Activity? =
+            if (!activityStack.isEmpty()) activityStack.peek() else null
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        instance = this
+        AppContextProvider.init(this)
 
-        // Register ActivityLifecycleCallbacks to track the current activity.
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                activityStack.push(activity)
+                currentActivity = activity  // Update current activity when created
+            }
 
-            override fun onActivityStarted(activity: Activity) {}
-
-            override fun onActivityResumed(activity: Activity) {
+            override fun onActivityStarted(activity: Activity) {
                 currentActivity = activity
             }
 
-            override fun onActivityPaused(activity: Activity) {
-                if (currentActivity === activity) {
-                    currentActivity = null
+            override fun onActivityResumed(activity: Activity) {
+                currentActivity = activity
+
+                // Validate stack integrity
+                if (!activityStack.contains(activity)) {
+                    activityStack.push(activity)
                 }
             }
 
-            override fun onActivityStopped(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {
+                // Only clear if it's the current activity being paused
+                if (currentActivity === activity) {
+                    // Instead of setting to null, set to the previous activity in stack if available
+                    currentActivity = if (activityStack.size > 1) {
+                        val index = activityStack.indexOf(activity)
+                        if (index > 0) activityStack[index - 1] else null
+                    } else null
+                }
+            }
 
-            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityStopped(activity: Activity) {
+                // Similar logic to onActivityPaused
+                if (currentActivity === activity) {
+                    currentActivity = if (activityStack.size > 1) {
+                        val index = activityStack.indexOf(activity)
+                        if (index > 0) activityStack[index - 1] else null
+                    } else null
+                }
+            }
 
             override fun onActivityDestroyed(activity: Activity) {
+                activityStack.remove(activity)
+
                 if (currentActivity === activity) {
-                    currentActivity = null
+                    // Set current activity to the top of stack if available
+                    currentActivity = getTopActivity()
                 }
+            }
+
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+                // No tracking needed for save instance state
             }
         })
 
-        // Set the uncaught exception handler.
+        // Set the uncaught exception handler
         Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
             handleUncaughtException(thread, throwable)
         }
@@ -68,31 +100,35 @@ open class App : Application() {
 
     @SuppressLint("SimpleDateFormat")
     private fun handleUncaughtException(thread: Thread, throwable: Throwable) {
-        // Get the stack trace as a string.
-        var stackTrace = Log.getStackTraceString(throwable)
-        val dateFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val additionalInfo = """
-            Date and Time: ${dateFormatter.format(Date())}
-            Manufacturer: ${Build.MANUFACTURER}
-            Model: ${Build.MODEL}
-            SDK Version: ${Build.VERSION.SDK_INT}
-            App Version Name: ${AppUtils.getVersionName(this)}
-            App Version Code: ${AppUtils.getVersionCode(this)}
-            Device: ${Build.DEVICE}
-            Product: ${Build.PRODUCT}
-            Brand: ${Build.BRAND}
-            Hardware: ${Build.HARDWARE}
-            Thread: ${thread.name}
-            Activity: ${currentActivity?.javaClass?.simpleName ?: "Unknown"}
-            Exception: ${throwable.message}
-            Stack Trace:
+        // Get current activity from both sources for accuracy
+        val currentActivityName = getCurrentActivity()?.javaClass?.simpleName
+        val topActivityName = getTopActivity()?.javaClass?.simpleName
+
+        val stackTrace = buildString {
+            append(
+                """
+                Date and Time: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())}
+                App Name: ${AppUtil.getAppName(this@App)}
+                App Version: ${AppUtil.getAppVersionName(this@App)} (${
+                    AppUtil.getAppVersionCode(
+                        this@App
+                    )
+                })
+                Device: ${Build.MODEL} (SDK ${Build.VERSION.SDK_INT})
+                Current Activity: ${currentActivityName ?: topActivityName ?: "Unknown"}
+                Activity Stack: ${activityStack.joinToString(" -> ") { it.javaClass.simpleName }}
+                Exception: ${throwable.message}
+                Stack Trace:
             """.trimIndent()
-        stackTrace = "$additionalInfo\n$stackTrace"
+            )
+            append("\n")
+            append(Log.getStackTraceString(throwable))
+        }
 
-        // Copy exception to clipboard.
-        SystemServiceUtils.copyToClipboard(this, stackTrace)
+        // Copy exception to clipboard
+        SystemServiceUtil.copyToClipboard(this, stackTrace)
 
-        // Notify user via toast.
+        // Notify user via toast
         try {
             Toast.makeText(
                 this,
@@ -103,7 +139,7 @@ open class App : Application() {
             e.printStackTrace()
         }
 
-        // Allow default exception handler now.
+        // Allow default exception handler now
         defaultUncaughtExceptionHandler?.uncaughtException(thread, throwable)
     }
 }

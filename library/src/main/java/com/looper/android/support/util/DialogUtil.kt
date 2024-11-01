@@ -8,7 +8,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.looper.android.support.R
 
-object DialogUtils {
+object DialogUtil {
 
     /**
      * Displays a loading progress dialog.

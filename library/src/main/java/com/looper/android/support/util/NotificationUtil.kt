@@ -4,11 +4,10 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 
-object NotificationUtils {
+object NotificationUtil {
 
     /**
      * Builds a notification channel if it doesn't already exist, with compatibility for different Android versions.
@@ -17,30 +16,28 @@ object NotificationUtils {
      * @param notificationChannelId, the unique ID for the notification channel.
      * @param notificationChannelName, the user-visible name of the notification channel.
      */
-    fun buildChannel(
+    fun buildNotificationChannel(
         context: Context,
         notificationChannelId: String,
         notificationChannelName: String
     ) {
         // Check if the Android version is Oreo or higher, as NotificationChannel is not available in lower versions.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            // Check if the notification channel already exists.
-            val existingChannel = notificationManager.getNotificationChannel(notificationChannelId)
+        // Check if the notification channel already exists.
+        val existingChannel = notificationManager.getNotificationChannel(notificationChannelId)
 
-            if (existingChannel == null) {
-                // Create a new notification channel.
-                val notificationChannel = NotificationChannel(
-                    notificationChannelId,
-                    notificationChannelName,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
+        if (existingChannel == null) {
+            // Create a new notification channel.
+            val notificationChannel = NotificationChannel(
+                notificationChannelId,
+                notificationChannelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
 
-                // Create the notification channel.
-                notificationManager.createNotificationChannel(notificationChannel)
-            }
+            // Create the notification channel.
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 

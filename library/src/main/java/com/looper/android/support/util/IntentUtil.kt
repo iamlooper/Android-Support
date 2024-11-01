@@ -9,7 +9,7 @@ import androidx.core.content.FileProvider
 import com.looper.android.support.R
 import java.io.File
 
-object IntentUtils {
+object IntentUtil {
 
     /**
      * Opens a provided URL using Intent.

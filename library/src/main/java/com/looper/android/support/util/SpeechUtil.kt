@@ -10,7 +10,7 @@ import android.widget.Toast
 import com.looper.android.support.R
 import java.util.Locale
 
-class SpeechUtils(private val context: Context) {
+class SpeechUtil(private val context: Context) {
 
     private var speechRecognizer: SpeechRecognizer? = null
     private var textToSpeech: TextToSpeech? = null

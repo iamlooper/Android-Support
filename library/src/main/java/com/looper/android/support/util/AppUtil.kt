@@ -9,7 +9,7 @@ import android.util.Base64
 import java.io.File
 import java.security.MessageDigest
 
-object AppUtils {
+object AppUtil {
 
     /**
      * Calculates the SHA-256 hash of the app's signatures and returns it as a Base64-encoded string.
@@ -18,7 +18,7 @@ object AppUtils {
      * @return The SHA-256 hash of the app's signatures as a Base64-encoded string.
      */
     @SuppressLint("PackageManagerGetSignatures")
-    fun getSignatureHash(context: Context): String {
+    fun getAppSignatureHash(context: Context): String {
         var signatureHash = ""
 
         try {
@@ -38,7 +38,7 @@ object AppUtils {
 
             // Get the app's signatures.
             val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                packageInfo.signingInfo.apkContentsSigners
+                packageInfo.signingInfo?.apkContentsSigners
             } else {
                 @Suppress("DEPRECATION")
                 packageInfo.signatures
@@ -46,8 +46,10 @@ object AppUtils {
 
             // Iterate over all signatures and update the MessageDigest with SHA-256 algorithm.
             val md = MessageDigest.getInstance("SHA-256")
-            for (signature in signatures) {
-                md.update(signature.toByteArray())
+            if (signatures != null) {
+                for (signature in signatures) {
+                    md.update(signature.toByteArray())
+                }
             }
 
             // Get the hash bytes and convert them to Base64-encoded string.
@@ -61,16 +63,37 @@ object AppUtils {
     }
 
     /**
+     * Retrieves the name of the application.
+     *
+     * @param context, the context of the application.
+     * @return The name of the application as specified in the manifest.
+     */
+    fun getAppName(context: Context): String {
+        return try {
+            val applicationInfo = context.applicationInfo
+            val stringId = applicationInfo.labelRes
+            if (stringId == 0) {
+                applicationInfo.nonLocalizedLabel.toString()
+            } else {
+                context.getString(stringId)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
+    /**
      * Retrieves the version name of the application.
      *
      * @param context, the context of the application.
      * @return The version name of the application.
      */
-    fun getVersionName(context: Context): String {
+    fun getAppVersionName(context: Context): String {
         return try {
             val packageInfo: PackageInfo =
                 context.packageManager.getPackageInfo(context.packageName, 0)
-            packageInfo.versionName
+            packageInfo.versionName.toString()
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
             ""
@@ -83,7 +106,7 @@ object AppUtils {
      * @param context, the context of the application.
      * @return The version code of the application.
      */
-    fun getVersionCode(context: Context): Long {
+    fun getAppVersionCode(context: Context): Long {
         return try {
             val packageInfo: PackageInfo =
                 context.packageManager.getPackageInfo(context.packageName, 0)
@@ -106,7 +129,7 @@ object AppUtils {
      * @param packageName, the package name to check for installation.
      * @return True if the package is installed, false otherwise.
      */
-    fun isInstalled(context: Context, packageName: String): Boolean {
+    fun isPackageInstalled(context: Context, packageName: String): Boolean {
         return try {
             context.packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
             true
@@ -116,13 +139,13 @@ object AppUtils {
     }
 
     /**
-     * Gets the full path of a native library file.
+     * Gets the full path of the native library file of the application.
      *
      * @param context The application context.
      * @param libraryName The name of the native library (without any prefix or extension).
      * @return The absolute path of the native library file.
      */
-    fun getNativeLibraryPath(context: Context, libraryName: String): String {
+    fun getAppNativeLibraryPath(context: Context, libraryName: String): String {
         val libraryFolderPath = context.applicationInfo.nativeLibraryDir
         val libraryFileName = System.mapLibraryName(libraryName)
         val libraryFile = File(libraryFolderPath, libraryFileName)

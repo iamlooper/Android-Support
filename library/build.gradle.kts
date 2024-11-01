@@ -6,11 +6,10 @@ plugins {
 
 android {
     namespace = "com.looper.android.support"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
-        multiDexEnabled = true
+        minSdk = 26
     }
     
     compileOptions {
@@ -50,7 +49,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.iamlooper"
                 artifactId = "android-support"
-                version = "2.11.0"
+                version = "3.0.0"
             }
         }
     }
