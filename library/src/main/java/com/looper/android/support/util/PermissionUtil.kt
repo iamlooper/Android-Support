@@ -2,12 +2,10 @@ package com.looper.android.support.util
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import com.looper.android.support.R
 
 object PermissionUtil {
 
@@ -53,13 +51,7 @@ object PermissionUtil {
                     if (isPermissionGranted(context, permission)) {
                         onPermissionGranted?.invoke()
                     } else {
-                        onPermissionDenied?.invoke() ?: run {
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.permission_not_granted_message),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                        onPermissionDenied?.invoke()
                     }
                 }
             }

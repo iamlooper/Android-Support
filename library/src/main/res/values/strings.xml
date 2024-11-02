@@ -8,6 +8,10 @@
     <string name="tts_init_failed">Text-to-speech initialization failed</string>
     <string name="stt_not_available">Speech-to-text not available</string>
     <string name="app_crashed_message">App crashed. Log copied to clipboard</string>
-    <string name="permission_not_granted_message">Permission not granted, functionality of the app may be affected</string>
     <string name="action_confirm_text">Are you certain? This action is irreversible.</string>
+    <string name="app_update_title">Update Available</string>
+    <string name="app_update_message">A new version %1$s is available. Would you like to update?</string>
+    <string name="update">Update</string>
+    <string name="later">Later</string>
+    <string name="changelog">Changelog</string>
 </resources>
