@@ -42,5 +42,6 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core)
+    implementation(libs.material)
     implementation(project(":library"))
 }

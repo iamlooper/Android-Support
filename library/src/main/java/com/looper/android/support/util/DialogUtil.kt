@@ -46,7 +46,7 @@ object DialogUtil {
     ): AlertDialog {
         val dialog = MaterialAlertDialogBuilder(context)
             .setTitle(title)
-            .setView(R.layout.dialog_action_confirm)
+            .setMessage(context.getString(R.string.action_confirm_text))
             .setPositiveButton(context.getString(R.string.okay)) { _, _ ->
                 onPositiveAction?.invoke()
             }
@@ -97,16 +97,5 @@ object DialogUtil {
         dialog.show()
 
         return dialog
-    }
-
-    /**
-     * Dismisses the specified dialog if it is currently showing.
-     *
-     * @param dialog The AlertDialog instance to be dismissed.
-     */
-    fun dismissDialog(dialog: AlertDialog) {
-        if (dialog.isShowing) {
-            dialog.dismiss()
-        }
     }
 }
